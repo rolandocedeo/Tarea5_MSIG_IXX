@@ -40,7 +40,174 @@
         </nav></div>
     <div id="map"></div>
     <div id="plano"></div>
+    <div id="graph">
+      <canvas id="grafico"></canvas>
+    </div>
+    <div id="canvasTeorico">
+      <canvas id="canvas" style="background-color:#333"></canvas>
+    </div>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCi_VF7Gq5_upzFRCIYcuBYLMinX1cWals&callback=initMap&libraries=places"
     async defer></script>
+    
+    <script>
+        var canvasG;
+        var context;
+        var Val_Max;
+        var Val_Min;
+        var sections;
+        var xScale;
+        var yScale;
+        var y;
+        // values of each item on the graph
+        var itemName = ["Tend Inf", "Com Dat", "Est", "Met Inv", "Seg Inf"];
+        var itemValue = [8.4, 8.9, 7.5, 7.8, 8.3];
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        var radius = canvas.height / 2;
+        ctx.translate(radius, radius);
+        radius = radius * 0.90
+        //drawClock();
+        setInterval(drawClock, 1000);
+
+        function drawClock() {
+            drawFace(ctx, radius);
+            drawNumbers(ctx, radius);
+            drawTime(ctx, radius);
+        }
+
+        function drawFace(ctx, radius) {
+            var grad;
+
+            ctx.beginPath();
+            ctx.arc(0, 0, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = 'white';
+            ctx.fill();
+
+            grad = ctx.createRadialGradient(0, 0, radius * 0.95, 0, 0, radius * 1.05);
+            grad.addColorStop(0, '#333');
+            grad.addColorStop(0.5, 'white');
+            grad.addColorStop(1, '#333');
+            ctx.strokeStyle = grad;
+            ctx.lineWidth = radius * 0.1;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(0, 0, radius * 0.1, 0, 2 * Math.PI);
+            ctx.fillStyle = '#333';
+            ctx.fill();
+        }
+
+        function drawNumbers(ctx, radius) {
+            var ang;
+            var num;
+            ctx.font = radius * 0.15 + "px arial";
+            ctx.textBaseline = "middle";
+            ctx.textAlign = "center";
+            for (num = 1; num < 13; num++) {
+                ang = num * Math.PI / 6;
+                ctx.rotate(ang);
+                ctx.translate(0, -radius * 0.85);
+                ctx.rotate(-ang);
+                ctx.fillText(num.toString(), 0, 0);
+                ctx.rotate(ang);
+                ctx.translate(0, radius * 0.85);
+                ctx.rotate(-ang);
+            }
+        }
+
+        function drawTime(ctx, radius) {
+            var now = new Date();
+            var hour = now.getHours();
+            var minute = now.getMinutes();
+            var second = now.getSeconds();
+            //hour
+            hour = hour % 12;
+            hour = (hour * Math.PI / 6) + (minute * Math.PI / (6 * 60)) + (second * Math.PI / (360 * 60));
+            drawHand(ctx, hour, radius * 0.5, radius * 0.07);
+            //minute
+            minute = (minute * Math.PI / 30) + (second * Math.PI / (30 * 60));
+            drawHand(ctx, minute, radius * 0.8, radius * 0.07);
+            // second
+            second = (second * Math.PI / 30);
+            drawHand(ctx, second, radius * 0.9, radius * 0.02);
+        }
+
+        function drawHand(ctx, pos, length, width) {
+            ctx.beginPath();
+            ctx.lineWidth = width;
+            ctx.lineCap = "round";
+            ctx.moveTo(0, 0);
+            ctx.rotate(pos);
+            ctx.lineTo(0, -length);
+            ctx.stroke();
+            ctx.rotate(-pos);
+        }
+
+        function init() {
+            // intialize values for each variables
+            sections = 5;
+            Val_Max = 14;
+            var stepSize = 1;
+            var columnSize = 50;
+            var rowSize = 60;
+            var margin = 10;
+            var header = "Notas Promedio"
+            //
+
+            canvasG = document.getElementById("grafico");
+            context = canvasG.getContext("2d");
+            context.fillStyle = "#000;"
+
+            yScale = (canvasG.height - columnSize - margin) / (Val_Max);
+            xScale = (canvasG.width - rowSize) / (sections + 1);
+
+            context.strokeStyle = "#000;"; // background black lines
+            context.beginPath();
+            // column names 
+            context.font = "19 pt Verdana"
+            context.fillText(header, 0, columnSize - margin);
+            // draw lines in the background
+            context.font = "16 pt Helvetica"
+            var count = 0;
+            for (scale = Val_Max; scale >= 0; scale = scale - stepSize) {
+                y = columnSize + (yScale * count * stepSize);
+                context.fillText(scale, margin, y + margin);
+                context.moveTo(rowSize, y)
+                context.lineTo(canvasG.width, y)
+                count++;
+            }
+            context.stroke();
+
+            // print names of each data entry
+            context.font = "20 pt Verdana";
+            context.textBaseline = "bottom";
+            for (i = 0; i < 5; i++) {
+                computeHeight(itemValue[i]);
+                context.fillText(itemName[i], xScale * (i + 1), y - margin);
+            }
+
+            // shadow for graph's bar lines with color and offset
+
+            context.fillStyle = "#9933FF;";
+            context.shadowColor = 'rgba(128,128,128, 0.5)';
+
+            //shadow offset along X and Y direction 
+            context.shadowOffsetX = 9;
+            context.shadowOffsetY = 3;
+
+            // translate to bottom of graph  inorder to match the data 
+            context.translate(0, canvasG.height - margin);
+            context.scale(xScale, -1 * yScale);
+
+            // draw each graph bars	
+            for (i = 0; i < 5; i++) {
+                context.fillRect(i + 1, 0, 0.3, itemValue[i]);
+            }
+        }
+
+        function computeHeight(value) {
+            y = canvasG.height - value * yScale;
+        }
+    </script>
   </body>
 </html>
