@@ -6,6 +6,8 @@
     <link href="estilos.css" type="text/css" rel="stylesheet"/>
     <meta charset="utf-8">
     <script src="Google_API.js" type="text/javascript"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -50,7 +52,7 @@
     <div id="map"></div>
     <div id="plano"></div>
     <div id="graph">
-        <canvas id="grafico" style="width:100%; height:100%"></canvas>
+        <div id="grafico" style="width:100%; height:100%"></div>
     </div>
     <div id="canvasTeorico">
         <canvas id="canvas" style="width:100%; height:100%"></canvas>
@@ -59,15 +61,6 @@
     async defer></script>
     
     <script>
-        var canvasG;
-        var context;
-        var Val_Max;
-        var Val_Min;
-        var sections;
-        var xScale;
-        var yScale;
-        var y;
-        // values of each item on the graph
         var itemName = ["Tend Inf", "Com Dat", "Est", "Met Inv", "Seg Inf"];
         var itemValue = [8.4, 8.9, 7.5, 7.8, 8.3];
         var canvas = document.getElementById("canvas");
@@ -150,72 +143,6 @@
             ctx.lineTo(0, -length);
             ctx.stroke();
             ctx.rotate(-pos);
-        }
-
-        function init() {
-            // intialize values for each variables
-            sections = 5;
-            Val_Max = 10;
-            var stepSize = 1;
-            var columnSize = 50;
-            var rowSize = 60;
-            var margin = 10;
-            var header = "Notas Promedio"
-            //
-
-            canvasG = document.getElementById("grafico");
-            context = canvasG.getContext("2d");
-            context.fillStyle = "#000;"
-
-            yScale = (canvasG.height - columnSize - margin) / (Val_Max);
-            xScale = (canvasG.width - rowSize) / (sections + 1);
-
-            context.strokeStyle = "#000;"; // background black lines
-            context.beginPath();
-            // column names 
-            context.font = "19 pt Verdana"
-            context.fillText(header, 0, columnSize - margin);
-            // draw lines in the background
-            context.font = "16 pt Helvetica"
-            var count = 0;
-            for (scale = Val_Max; scale >= 0; scale = scale - stepSize) {
-                y = columnSize + (yScale * count * stepSize);
-                context.fillText(scale, margin, y + margin);
-                context.moveTo(rowSize, y)
-                context.lineTo(canvasG.width, y)
-                count++;
-            }
-            context.stroke();
-
-            // print names of each data entry
-            context.font = "20 pt Verdana";
-            context.textBaseline = "bottom";
-            for (i = 0; i < 5; i++) {
-                computeHeight(itemValue[i]);
-                context.fillText(itemName[i], xScale * (i + 1), y - margin);
-            }
-
-            // shadow for graph's bar lines with color and offset
-
-            context.fillStyle = "#9933FF;";
-            context.shadowColor = 'rgba(128,128,128, 0.5)';
-
-            //shadow offset along X and Y direction 
-            context.shadowOffsetX = 9;
-            context.shadowOffsetY = 3;
-
-            // translate to bottom of graph  inorder to match the data 
-            context.translate(0, canvasG.height - margin);
-            context.scale(xScale, -1 * yScale);
-
-            // draw each graph bars	
-            for (i = 0; i < 5; i++) {
-                context.fillRect(i + 1, 0, 0.3, itemValue[i]);
-            }
-        }
-
-        function computeHeight(value) {
-            y = canvasG.height - value * yScale;
         }
     </script>
   </body>
