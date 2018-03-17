@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <link href="estilos.css" type="text/css" rel="stylesheet"/>
+    <meta charset="utf-8">
+    <script src="Google_API.js" type="text/javascript"></script>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 50%;
+        width: 50%;
+        float: left;
+      }
+      #plano {
+        height: 50%;
+        width: 50%;
+        float: left;
+      }
+
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+      <div><nav>
+        <ul>
+            <li><a title="Opcion 1" href="#">Opcion 1</a></li>
+            <li><a title="Opcion 2" href="#">Opcion 2</a></li>
+            <li><a title="Opcion 3" href="#">Opcion 3</a></li>
+            <li><a title="Opcion 4" href="#">Opcion 4</a></li>
+            <li><a title="Opcion 5" href="#">Opcion 5</a></li>
+        </ul>
+        </nav></div>
+    <div id="map"></div>
+    <div id="plano"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCi_VF7Gq5_upzFRCIYcuBYLMinX1cWals&callback=initMap&libraries=places"
+    async defer></script>
+  </body>
+</html>
