@@ -144,6 +144,64 @@
             ctx.stroke();
             ctx.rotate(-pos);
         }
+      
+      Highcharts.chart('grafico', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Notas Promedio MSIG XIX'
+            },
+            subtitle: {
+                text: 'Fuente: Sidweb.com'
+            },
+            xAxis: {
+                categories: [
+                    'Tend Inf',
+                    'Com Dat',
+                    'Est',
+                    'Met Inv',
+                    'Seg Inf',
+                    'Cont Fin',
+                    'Fin',
+                    'Comp Org',
+                    'Perps SL',
+                    'Ing Softw',
+                    'Des Web',
+                    'Adm Proy',
+                    'Tecn Web'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Nota Promedio'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Alumno 1',
+                data: [9.9, 7.5, 6.4, 9.2, 4.0, 6.0, 5.6, 8.5, 6.4, 4.1, 5.6, 4.4, 6.8]
+            }, {
+                name: 'Alumno 2',
+                data: [8.6, 8.8, 8.5, 9.4, 6.0, 8.5, 5.0, 4.3, 9.2, 8.5, 6.6, 9.3, 7.8]
+            }]
+        });
+      
     </script>
   </body>
 </html>
