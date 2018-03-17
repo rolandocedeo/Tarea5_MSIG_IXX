@@ -16,7 +16,7 @@
         width: 50%;
         float: left;
       }
-      #plano {
+      #video {
         height: 50%;
         width: 50%;
         float: left;
@@ -39,7 +39,7 @@
       }
     </style>
   </head>
-  <body onload=init()>
+  <body>
       <div><nav>
         <ul>
             <li><a title="Opcion 1" href="#">Opcion 1</a></li>
@@ -50,7 +50,9 @@
         </ul>
         </nav></div>
     <div id="map"></div>
-    <div id="plano"></div>
+    <div id="video">
+        <video src="videoplayback.mp4" width="100%" height="100%" controls autoplay preload></video>
+    </div>
     <div id="graph">
         <div id="grafico" style="width:100%; height:100%"></div>
     </div>
