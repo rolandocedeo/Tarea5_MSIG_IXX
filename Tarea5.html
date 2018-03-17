@@ -19,7 +19,16 @@
         width: 50%;
         float: left;
       }
-
+      #graph {
+        height: 50%;
+        width: 50%;
+        float: left;
+      }
+      #canvasTeorico {
+        height: 50%;
+        width: 50%;
+        float: left;
+      }
       /* Optional: Makes the sample page fill the window. */
       html, body {
         height: 100%;
@@ -28,7 +37,7 @@
       }
     </style>
   </head>
-  <body>
+  <body onload=init()>
       <div><nav>
         <ul>
             <li><a title="Opcion 1" href="#">Opcion 1</a></li>
@@ -41,10 +50,10 @@
     <div id="map"></div>
     <div id="plano"></div>
     <div id="graph">
-      <canvas id="grafico"></canvas>
+        <canvas id="grafico" style="width:100%; height:100%"></canvas>
     </div>
     <div id="canvasTeorico">
-      <canvas id="canvas" style="background-color:#333"></canvas>
+        <canvas id="canvas" style="width:100%; height:100%"></canvas>
     </div>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCi_VF7Gq5_upzFRCIYcuBYLMinX1cWals&callback=initMap&libraries=places"
     async defer></script>
@@ -146,7 +155,7 @@
         function init() {
             // intialize values for each variables
             sections = 5;
-            Val_Max = 14;
+            Val_Max = 10;
             var stepSize = 1;
             var columnSize = 50;
             var rowSize = 60;
